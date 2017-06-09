@@ -8,14 +8,14 @@ def extractIP(line:String):(String) = {
     return (ip.toString)
 }
 
-var accessLogs = sc.textFile(args(0))
+var accessLogs = sc.textFile("/data/spark/project/access/access.log.45.gz")
 //Keep only the lines which have IP
 var ipaccesslogs = accessLogs.filter(containsIP)
 var cleanips = ipaccesslogs.map(extractIP(_))
 var ips_tuples = cleanips.map((_,1));
 
-var sortedfrequencies = frequencies.sortBy(x => x._2, false)
-var top10 = sortedfrequencies.take(topn)
+var sortedfrequencies = ips_tuples.sortBy(x => x._2, false)
+var top10 = sortedfrequencies.take(10)
 
 println("===== TOP 10 IP Addresses =====")
 for(i <- top10){
